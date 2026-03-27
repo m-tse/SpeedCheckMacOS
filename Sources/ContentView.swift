@@ -9,15 +9,20 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 0) {
             // Header
-            HStack {
-                Text("Network Speed")
-                    .font(.headline)
-                Spacer()
-                if speedTest.isRunning {
-                    ProgressView()
-                        .scaleEffect(0.5)
-                        .frame(width: 16, height: 16)
+            VStack(alignment: .leading, spacing: 2) {
+                HStack {
+                    Text("Network Speed")
+                        .font(.headline)
+                    Spacer()
+                    if speedTest.isRunning {
+                        ProgressView()
+                            .scaleEffect(0.5)
+                            .frame(width: 16, height: 16)
+                    }
                 }
+                Text("speed.cloudflare.com")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
             }
             .padding(.horizontal, 16)
             .padding(.top, 12)
@@ -27,23 +32,27 @@ struct ContentView: View {
 
             // Speed display
             VStack(spacing: 12) {
-                SpeedRow(label: "Download", value: speedTest.downloadSpeed, unit: "Mbps", icon: "↓", color: .green)
-                SpeedRow(label: "Upload", value: speedTest.uploadSpeed, unit: "Mbps", icon: "↑", color: .blue)
+                SpeedRow(label: "Download", value: speedTest.downloadSpeed, unit: "Mbps", icon: "↓", color: .green, showInMenuBar: $speedTest.showDownload)
+                SpeedRow(label: "Upload", value: speedTest.uploadSpeed, unit: "Mbps", icon: "↑", color: .blue, showInMenuBar: $speedTest.showUpload)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
 
-            // Last tested
-            if let lastTest = speedTest.lastTestTime {
-                HStack {
+            // Status
+            HStack {
+                if !speedTest.phase.isEmpty {
+                    Text(speedTest.phase)
+                        .font(.caption)
+                        .foregroundColor(.orange)
+                } else if let lastTest = speedTest.lastTestTime {
                     Text("Last tested: \(timeAgo(lastTest))")
                         .font(.caption)
                         .foregroundColor(.secondary)
-                    Spacer()
                 }
-                .padding(.horizontal, 16)
-                .padding(.bottom, 8)
+                Spacer()
             }
+            .padding(.horizontal, 16)
+            .padding(.bottom, 8)
 
             Divider()
 
@@ -131,9 +140,13 @@ struct SpeedRow: View {
     let unit: String
     let icon: String
     let color: Color
+    @Binding var showInMenuBar: Bool
 
     var body: some View {
         HStack {
+            Toggle("", isOn: $showInMenuBar)
+                .toggleStyle(.checkbox)
+                .labelsHidden()
             Text(icon)
                 .font(.title2)
                 .foregroundColor(color)
