@@ -120,19 +120,35 @@ class SpeedTestManager: ObservableObject {
         downloadSpeed = "—"
         uploadSpeed = "—"
 
-        runDownloadTest { [weak self] dlSpeed in
+        let finish = { [weak self] in
             guard let self = self else { return }
-            self.downloadSpeed = String(format: "%.0f", dlSpeed)
-            self.phase = "Testing upload..."
+            self.isRunning = false
+            self.lastTestTime = Date()
+            self.phase = ""
+            self.updateMenuBarTitle()
+        }
 
-            self.runUploadTest { [weak self] ulSpeed in
-                guard let self = self else { return }
-                self.uploadSpeed = String(format: "%.0f", ulSpeed)
-                self.isRunning = false
-                self.lastTestTime = Date()
-                self.phase = ""
-                self.updateMenuBarTitle()
+        let doUpload = { [weak self] in
+            guard let self = self else { return }
+            if self.showUpload {
+                self.phase = "Testing upload..."
+                self.runUploadTest { [weak self] ulSpeed in
+                    self?.uploadSpeed = String(format: "%.0f", ulSpeed)
+                    finish()
+                }
+            } else {
+                finish()
             }
+        }
+
+        if showDownload {
+            phase = "Testing download..."
+            runDownloadTest { [weak self] dlSpeed in
+                self?.downloadSpeed = String(format: "%.0f", dlSpeed)
+                doUpload()
+            }
+        } else {
+            doUpload()
         }
     }
 
