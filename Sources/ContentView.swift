@@ -31,6 +31,19 @@ struct ContentView: View {
 
             Divider()
 
+            // Test now button
+            Button(action: { speedTest.runSpeedTest() }) {
+                HStack {
+                    Image(systemName: "bolt.fill")
+                    Text(speedTest.isRunning ? "Testing..." : "Test Now")
+                }
+                .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(speedTest.isRunning)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+
             // Speed display
             VStack(spacing: 12) {
                 SpeedRow(label: "Download", value: speedTest.downloadSpeed, unit: "Mbps", icon: "↓", color: .green, showInMenuBar: $speedTest.showDownload)
@@ -54,21 +67,6 @@ struct ContentView: View {
             }
             .padding(.horizontal, 16)
             .padding(.bottom, 8)
-
-            Divider()
-
-            // Test now button
-            Button(action: { speedTest.runSpeedTest() }) {
-                HStack {
-                    Image(systemName: "bolt.fill")
-                    Text(speedTest.isRunning ? "Testing..." : "Test Now")
-                }
-                .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.borderedProminent)
-            .disabled(speedTest.isRunning)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
 
             Divider()
 
