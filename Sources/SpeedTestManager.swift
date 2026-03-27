@@ -57,7 +57,7 @@ class SpeedTestManager: ObservableObject {
     @Published var isRunning: Bool = false
     @Published var lastTestTime: Date? = nil
     @Published var phase: String = ""
-    @Published var menuBarTitle: String = "⇅ —"
+    @Published var menuBarTitle: String = "— ⇅"
 
     @Published var showDownload: Bool {
         didSet {
@@ -116,7 +116,7 @@ class SpeedTestManager: ObservableObject {
         guard !isRunning else { return }
         isRunning = true
         phase = "Testing download..."
-        menuBarTitle = "⇅ ..."
+        menuBarTitle = ".. ⇅"
         downloadSpeed = "—"
         uploadSpeed = "—"
 
@@ -236,11 +236,11 @@ class SpeedTestManager: ObservableObject {
 
     func updateMenuBarTitle() {
         if downloadSpeed == "—" && uploadSpeed == "—" {
-            menuBarTitle = "⇅ —"
+            menuBarTitle = "— ⇅"
             return
         }
         if downloadSpeed == "Error" {
-            menuBarTitle = "⇅ Error"
+            menuBarTitle = "Error ⇅"
             return
         }
         var parts: [String] = []
