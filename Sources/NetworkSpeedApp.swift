@@ -25,7 +25,7 @@ struct NetworkSpeedApp: App {
         let size = attrStr.size()
         let image = NSImage(size: size)
         image.lockFocus()
-        attrStr.draw(at: .zero)
+        attrStr.draw(at: NSPoint(x: 0, y: -font.descender / 2 - 0.5))
         image.unlockFocus()
         image.isTemplate = true
         return image
