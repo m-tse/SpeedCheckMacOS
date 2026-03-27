@@ -14,23 +14,24 @@ A lightweight macOS menu bar app that shows your internet speed at a glance, pow
 - **Manual test** — Hit "Test Now" to run a speed test on demand
 - **No dependencies** — Pure Swift/SwiftUI, no Python or CLI tools required
 
+## Install
+
+```bash
+brew install m-tse/speedmenubar/speedmenubar
+```
+
 ## Requirements
 
 - macOS 13.0 (Ventura) or later
 - Apple Silicon (arm64)
 
-## Build
+## Build from source
 
 ```bash
 git clone https://github.com/m-tse/SpeedMenuBarApp.git
 cd SpeedMenuBarApp
 chmod +x build.sh
 ./build.sh
-```
-
-## Run
-
-```bash
 open "Network Speed.app"
 ```
 
