@@ -4,23 +4,17 @@ import ServiceManagement
 struct ContentView: View {
     @EnvironmentObject var speedTest: SpeedTestManager
     @State private var launchOnLogin = SMAppService.mainApp.status == .enabled
+    @State private var now = Date()
 
     private let intervalOptions = [5, 10, 15, 30, 60]
+    private let minuteTimer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
 
     var body: some View {
         VStack(spacing: 0) {
             // Header
-            VStack(alignment: .leading, spacing: 2) {
-                HStack {
-                    Text("Network Speed")
-                        .font(.headline)
-                    Spacer()
-                    if speedTest.isRunning {
-                        ProgressView()
-                            .scaleEffect(0.5)
-                            .frame(width: 16, height: 16)
-                    }
-                }
+            VStack(spacing: 2) {
+                Text("Network Speed")
+                    .font(.headline)
                 Text("speed.cloudflare.com")
                     .font(.caption2)
                     .foregroundColor(.secondary)
@@ -44,6 +38,20 @@ struct ContentView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
 
+            // Status
+            Group {
+                if !speedTest.phase.isEmpty {
+                    Text(speedTest.phase)
+                        .font(.caption)
+                        .foregroundColor(.orange)
+                } else if let lastTest = speedTest.lastTestTime {
+                    Text("Last tested: \(timeAgo(lastTest, now: now))")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            }
+            .padding(.bottom, 4)
+
             // Speed display
             VStack(spacing: 12) {
                 SpeedRow(label: "Download", value: speedTest.downloadSpeed, unit: "Mbps", icon: "↓", color: .green, showInMenuBar: $speedTest.showDownload)
@@ -52,31 +60,14 @@ struct ContentView: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
 
-            // Status
-            HStack {
-                if !speedTest.phase.isEmpty {
-                    Text(speedTest.phase)
-                        .font(.caption)
-                        .foregroundColor(.orange)
-                } else if let lastTest = speedTest.lastTestTime {
-                    Text("Last tested: \(timeAgo(lastTest))")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                Spacer()
-            }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 8)
-
             Divider()
 
             // Settings
             VStack(spacing: 8) {
-                HStack {
+                HStack(spacing: 4) {
                     Text("Test every")
                         .font(.caption)
                         .foregroundColor(.secondary)
-                    Spacer()
                     Picker("", selection: Binding(
                         get: { speedTest.intervalMinutes },
                         set: { speedTest.updateInterval($0) }
@@ -121,10 +112,11 @@ struct ContentView: View {
             .padding(.vertical, 8)
         }
         .frame(width: 260)
+        .onReceive(minuteTimer) { _ in now = Date() }
     }
 
-    private func timeAgo(_ date: Date) -> String {
-        let seconds = Int(-date.timeIntervalSinceNow)
+    private func timeAgo(_ date: Date, now: Date) -> String {
+        let seconds = Int(now.timeIntervalSince(date))
         if seconds < 60 { return "just now" }
         let minutes = seconds / 60
         if minutes < 60 { return "\(minutes)m ago" }
