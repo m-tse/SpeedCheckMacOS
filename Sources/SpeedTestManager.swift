@@ -148,7 +148,7 @@ class SpeedTestManager: ObservableObject {
             DispatchQueue.main.async {
                 self?.downloadSpeed = String(format: "%.0f", mbps)
                 if self?.showDownload == true {
-                    self?.menuBarTitle = "↓\(String(format: "%.0f", mbps))"
+                    self?.menuBarTitle = "\(String(format: "%.0f", mbps))↓"
                 }
             }
             finalSpeed = mbps
@@ -186,8 +186,8 @@ class SpeedTestManager: ObservableObject {
                 self?.uploadSpeed = String(format: "%.0f", mbps)
                 if self?.showUpload == true {
                     var parts: [String] = []
-                    if self?.showDownload == true { parts.append("↓\(self?.downloadSpeed ?? "—")") }
-                    parts.append("↑\(String(format: "%.0f", mbps))")
+                    if self?.showDownload == true { parts.append("\(self?.downloadSpeed ?? "—")↓") }
+                    parts.append("\(String(format: "%.0f", mbps))↑")
                     self?.menuBarTitle = parts.joined(separator: " ")
                 }
             }
@@ -228,8 +228,8 @@ class SpeedTestManager: ObservableObject {
             return
         }
         var parts: [String] = []
-        if showDownload { parts.append("↓\(downloadSpeed)") }
-        if showUpload { parts.append("↑\(uploadSpeed)") }
+        if showDownload { parts.append("\(downloadSpeed)↓") }
+        if showUpload { parts.append("\(uploadSpeed)↑") }
         menuBarTitle = parts.isEmpty ? "⇅" : parts.joined(separator: " ")
     }
 
