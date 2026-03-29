@@ -4,6 +4,10 @@ A lightweight macOS menu bar app that shows your internet speed at a glance, pow
 
 ![Screenshot](screenshot.png)
 
+## Why
+
+If you're the kind of person who visits [fast.com](https://fast.com) multiple times a day — after restarting your router, joining a new WiFi network, or just because something feels slow — this app saves you the trip. Your download and upload speeds are always right there in the menu bar, updating automatically on a schedule you choose.
+
 ## Features
 
 - **Real-time speed display** — Download and upload speeds update live in the menu bar as tests run
