@@ -22,6 +22,7 @@ mkdir -p "Network Speed.app/Contents/MacOS"
 mkdir -p "Network Speed.app/Contents/Resources"
 cp NetworkSpeed "Network Speed.app/Contents/MacOS/"
 cp Info.plist "Network Speed.app/Contents/"
+cp AppIcon.icns "Network Speed.app/Contents/Resources/"
 rm NetworkSpeed
 
 echo "Built successfully: Network Speed.app"
