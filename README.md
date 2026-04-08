@@ -24,6 +24,12 @@ If you're the kind of person who visits [fast.com](https://fast.com) multiple ti
 brew install m-tse/networkspeedmenubar/networkspeedmenubar
 ```
 
+## Update
+
+```bash
+brew update && brew upgrade --cask networkspeed
+```
+
 ## Requirements
 
 - macOS 13.0 (Ventura) or later
