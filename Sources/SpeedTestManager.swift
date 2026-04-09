@@ -1,8 +1,8 @@
 import Foundation
 import Combine
 
-// Download 25MB from Cloudflare, upload 10MB — fast, no server discovery
-private let downloadURL = URL(string: "https://speed.cloudflare.com/__down?bytes=25000000")!
+// Download 50MB from Cloudflare, upload 10MB — fast, no server discovery
+private let downloadURL = URL(string: "https://speed.cloudflare.com/__down?bytes=50000000")!
 private let uploadURL = URL(string: "https://speed.cloudflare.com/__up")!
 private let uploadSize = 10_000_000
 
