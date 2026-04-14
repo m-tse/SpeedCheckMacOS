@@ -39,8 +39,9 @@ struct ContentView: View {
                 }
                 .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.borderedProminent)
-            .tint(speedTest.isRunning ? Color.red.opacity(0.7) : .accentColor)
+            .buttonStyle(ProminentHoverButtonStyle(
+                tint: speedTest.isRunning ? Color.red.opacity(0.7) : .accentColor
+            ))
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
 
@@ -113,9 +114,9 @@ struct ContentView: View {
                 Text("Quit")
                     .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.plain)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
+            .buttonStyle(HoverHighlightButtonStyle())
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
         }
         .frame(width: 260)
         .onReceive(minuteTimer) { _ in now = Date() }
@@ -128,6 +129,55 @@ struct ContentView: View {
         if minutes < 60 { return "\(minutes)m ago" }
         let hours = minutes / 60
         return "\(hours)h ago"
+    }
+}
+
+struct ProminentHoverButtonStyle: ButtonStyle {
+    let tint: Color
+
+    func makeBody(configuration: Configuration) -> some View {
+        HoverBody(configuration: configuration, tint: tint)
+    }
+
+    private struct HoverBody: View {
+        let configuration: Configuration
+        let tint: Color
+        @State private var isHovering = false
+
+        var body: some View {
+            configuration.label
+                .padding(.vertical, 6)
+                .padding(.horizontal, 12)
+                .foregroundColor(.white)
+                .background(
+                    RoundedRectangle(cornerRadius: 6)
+                        .fill(tint.opacity(configuration.isPressed ? 0.7 : (isHovering ? 1.0 : 0.85)))
+                )
+                .onHover { isHovering = $0 }
+        }
+    }
+}
+
+struct HoverHighlightButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HoverBody(configuration: configuration)
+    }
+
+    private struct HoverBody: View {
+        let configuration: Configuration
+        @State private var isHovering = false
+
+        var body: some View {
+            configuration.label
+                .padding(.vertical, 4)
+                .padding(.horizontal, 8)
+                .contentShape(Rectangle())
+                .background(
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(Color.primary.opacity(configuration.isPressed ? 0.18 : (isHovering ? 0.1 : 0)))
+                )
+                .onHover { isHovering = $0 }
+        }
     }
 }
 
