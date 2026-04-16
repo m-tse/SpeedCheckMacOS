@@ -85,6 +85,7 @@ struct ContentView: View {
                     }
                     .pickerStyle(.menu)
                     .frame(width: 100)
+                    .hoverHighlight()
                 }
 
                 Toggle("Launch on login", isOn: $launchOnLogin)
@@ -101,6 +102,7 @@ struct ContentView: View {
                     }
                 .font(.caption)
                 .foregroundColor(.secondary)
+                .hoverHighlight()
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
@@ -129,6 +131,22 @@ struct ContentView: View {
         if minutes < 60 { return "\(minutes)m ago" }
         let hours = minutes / 60
         return "\(hours)h ago"
+    }
+}
+
+struct HoverHighlightModifier: ViewModifier {
+    @State private var isHovering = false
+
+    func body(content: Content) -> some View {
+        content
+            .brightness(isHovering ? -0.15 : 0)
+            .onHover { isHovering = $0 }
+    }
+}
+
+extension View {
+    func hoverHighlight() -> some View {
+        modifier(HoverHighlightModifier())
     }
 }
 
@@ -194,6 +212,7 @@ struct SpeedRow: View {
             Toggle("", isOn: $showInMenuBar)
                 .toggleStyle(.checkbox)
                 .labelsHidden()
+                .hoverHighlight()
             Text(icon)
                 .font(.title2)
                 .foregroundColor(color)
