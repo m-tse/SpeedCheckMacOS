@@ -4,7 +4,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
-echo "Building Network Speed..."
+echo "Building SpeedCheck..."
 
 SDK_PATH=$(xcrun --show-sdk-path)
 
@@ -13,17 +13,17 @@ swiftc \
     -sdk "$SDK_PATH" \
     -parse-as-library \
     -O \
-    -o NetworkSpeed \
+    -o SpeedCheck \
     Sources/*.swift
 
 echo "Creating app bundle..."
-rm -rf "Network Speed.app"
-mkdir -p "Network Speed.app/Contents/MacOS"
-mkdir -p "Network Speed.app/Contents/Resources"
-cp NetworkSpeed "Network Speed.app/Contents/MacOS/"
-cp Info.plist "Network Speed.app/Contents/"
-cp AppIcon.icns "Network Speed.app/Contents/Resources/"
-rm NetworkSpeed
+rm -rf "SpeedCheck.app"
+mkdir -p "SpeedCheck.app/Contents/MacOS"
+mkdir -p "SpeedCheck.app/Contents/Resources"
+cp SpeedCheck "SpeedCheck.app/Contents/MacOS/"
+cp Info.plist "SpeedCheck.app/Contents/"
+cp AppIcon.icns "SpeedCheck.app/Contents/Resources/"
+rm SpeedCheck
 
-echo "Built successfully: Network Speed.app"
-echo "Run with: open 'Network Speed.app'"
+echo "Built successfully: SpeedCheck.app"
+echo "Run with: open 'SpeedCheck.app'"

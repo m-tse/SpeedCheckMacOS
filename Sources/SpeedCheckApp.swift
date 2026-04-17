@@ -2,7 +2,7 @@ import SwiftUI
 import AppKit
 
 @main
-struct NetworkSpeedApp: App {
+struct SpeedCheckApp: App {
     @StateObject private var speedTest = SpeedTestManager()
 
     var body: some Scene {

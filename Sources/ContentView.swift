@@ -13,7 +13,7 @@ struct ContentView: View {
         VStack(spacing: 0) {
             // Header
             VStack(spacing: 2) {
-                Text("Network Speed")
+                Text("SpeedCheck")
                     .font(.headline)
                 Text("speed.cloudflare.com")
                     .font(.caption2)
