@@ -5,6 +5,7 @@ struct ContentView: View {
     @EnvironmentObject var speedTest: SpeedTestManager
     @State private var launchOnLogin = SMAppService.mainApp.status == .enabled
     @State private var now = Date()
+    @State private var keyMonitor: Any?
 
     private let intervalOptions = [5, 10, 15, 30, 60]
     private let minuteTimer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
@@ -122,6 +123,21 @@ struct ContentView: View {
         }
         .frame(width: 260)
         .onReceive(minuteTimer) { _ in now = Date() }
+        .onAppear {
+            keyMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+                if event.keyCode == 53 { // escape
+                    (event.window ?? NSApp.keyWindow)?.orderOut(nil)
+                    return nil
+                }
+                return event
+            }
+        }
+        .onDisappear {
+            if let monitor = keyMonitor {
+                NSEvent.removeMonitor(monitor)
+                keyMonitor = nil
+            }
+        }
     }
 
     private func timeAgo(_ date: Date, now: Date) -> String {
